@@ -9,9 +9,28 @@ html {
   min-height: 100%;
 }
 
+div.container {
+  background-color: #D9E9F9;
+}
+
+
+#scatter {
+  background-color: #ECF4FC;
+  text-align: center;
+  display: block;
+}
+
+.centerPlot {
+  background-color: #ECF4FC;
+  text-align: center;
+  display: block;
+
+}
+
 body {
   /* Padding bottom by footer height */
   padding-bottom: 80px;
+  background-color: rgb(248, 243, 237);
 }
 
 #footer {
