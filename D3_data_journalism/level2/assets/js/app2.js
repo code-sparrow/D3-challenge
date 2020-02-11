@@ -90,27 +90,28 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
 };
 
 // function used for updating circles group with new tooltip
-// function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData) {
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
-//     var toolTip = d3.tip()
-//         .attr("class", "tooltip")
-//         .offset([80, -60])
-//         .html(function(d) {
-//             return (`${healthData.state}<hr>${chosenXAxis}: ${d[chosenXAxis]}<br>${chosenYAxis}: ${d[chosenYAxis]}`);
-//         });
+    var toolTip = d3.tip()
+        //.data(healthData)
+        .attr("class", "tooltip")
+        .offset([80, -60])
+        .html(function(d) {
+            return (`<b>${d.state}</b><br><br>${chosenXAxis}: ${d[chosenXAxis]}<br><br>${chosenYAxis}: ${d[chosenYAxis]}`);
+        });
 
-//     circlesGroup.call(toolTip);
+    circlesGroup.call(toolTip);
 
-//     circlesGroup.on("mouseover", function(data) {
-//         toolTip.show(data);
-//     })
-//       // onmouseout event
-//         .on("mouseout", function(data, index) {
-//             toolTip.hide(data);
-//         });
+    circlesGroup.on("mouseover", function(data) {
+        toolTip.show(data);
+    })
+      // onmouseout event
+        .on("mouseout", function(data, index) {
+            toolTip.hide(data);
+        });
 
-//     return circlesGroup;
-// }
+    return circlesGroup;
+}
 
 // Load data from data.csv
 d3.csv("assets/data/data.csv").then(function(healthData, err) {
@@ -152,6 +153,7 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
         .data(healthData)
         .enter()
         .append("circle")
+        .attr("id","circles")
         .attr("cx", d => xScale(d[chosenXAxis]))
         .attr("cy", d => yScale(d[chosenYAxis]))
         .attr("r", 11)
@@ -231,7 +233,7 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
         .text("Obese (%)");
 
     // updateToolTip function above csv import
-    //var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData);
+    circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
     // x axis labels event listener
     xLabelGroup.selectAll("text")
@@ -275,8 +277,8 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
                     .attr("font-weight", "bold")
                     .text(d => d.abbr);
 
-                // updates tooltips with new info------todo
-                //var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData);
+                // updates tooltips with new info
+                circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
                 if (chosenXAxis === "age") {
                     ageLabel
@@ -352,8 +354,8 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
                     .attr("font-weight", "bold")
                     .text(d => d.abbr);
 
-                // updates tooltips with new info------todo
-                //var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData);
+                // updates tooltips with new info
+                circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
                 if (chosenYAxis === "smokes") {
                     smokesLabel
@@ -485,11 +487,3 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
 }).catch(function(error) {
     console.log(error);
 });
-
-//};
-
-// // When the browser loads, makeResponsive() is called.
-// makeResponsive();
-
-// // When the browser window is resized, makeResponsive() is called.
-// d3.select(window).on("resize", makeResponsive);
