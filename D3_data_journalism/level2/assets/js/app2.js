@@ -1,16 +1,3 @@
-// The code for the chart is wrapped inside a function that
-// automatically resizes the chart
-//function makeResponsive() {
-
-    // if the SVG area isn't empty when the browser loads,
-    // remove it and replace it with a resized version of the chart
-    //var svgArea = d3.select("body").select("svg");
-
-    // clear svg is not empty
-    //if (!svgArea.empty()) {
-    //    svgArea.remove();
-    //}
-
 // SVG wrapper dimensions are determined by the current width and
 // height of the browser window.
 var svgWidth = 960;
@@ -103,7 +90,27 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
 };
 
 // function used for updating circles group with new tooltip
-//----------------------------------to add
+// function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData) {
+
+//     var toolTip = d3.tip()
+//         .attr("class", "tooltip")
+//         .offset([80, -60])
+//         .html(function(d) {
+//             return (`${healthData.state}<hr>${chosenXAxis}: ${d[chosenXAxis]}<br>${chosenYAxis}: ${d[chosenYAxis]}`);
+//         });
+
+//     circlesGroup.call(toolTip);
+
+//     circlesGroup.on("mouseover", function(data) {
+//         toolTip.show(data);
+//     })
+//       // onmouseout event
+//         .on("mouseout", function(data, index) {
+//             toolTip.hide(data);
+//         });
+
+//     return circlesGroup;
+// }
 
 // Load data from data.csv
 d3.csv("assets/data/data.csv").then(function(healthData, err) {
@@ -224,17 +231,18 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
         .text("Obese (%)");
 
     // updateToolTip function above csv import
-    //-------------------------------to add
+    //var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData);
 
     // x axis labels event listener
     xLabelGroup.selectAll("text")
         .on("click", function() {
+            
 
             //remove regression line and text if exists
             chartGroup.selectAll("#regLine").remove();
             chartGroup.selectAll("#RText").remove();
             d3.selectAll(".checkbox").property("checked", false);
-
+            
             // get value of selection
             var value = d3.select(this).attr("value");
             
@@ -268,7 +276,7 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
                     .text(d => d.abbr);
 
                 // updates tooltips with new info------todo
-                //circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+                //var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData);
 
                 if (chosenXAxis === "age") {
                     ageLabel
@@ -345,7 +353,7 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
                     .text(d => d.abbr);
 
                 // updates tooltips with new info------todo
-                //circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+                //var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, healthData);
 
                 if (chosenYAxis === "smokes") {
                     smokesLabel
@@ -381,10 +389,9 @@ d3.csv("assets/data/data.csv").then(function(healthData, err) {
             };
         });
 
-    console.log(chosenXAxis, chosenYAxis);
 
     //--------------------------------------------------------------------------
-    // event listener for linear regression checkboc
+    // event listener for linear regression checkbox
     d3.selectAll(".checkbox")
         .on("change", function () {  
             if (this.checked) {
